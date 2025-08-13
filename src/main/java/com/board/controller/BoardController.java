@@ -71,7 +71,91 @@ public class BoardController {
 		return  mv;
 		
 	}
-	 
+	
+	// /Board/View
+	@RequestMapping("/Board/View")
+	public ModelAndView view(BoardDTO boardDTO) {
+		
+		
+		// 메뉴 목록 조회
+		List<MenuDTO> menuList = menuMapper.getMenuList();
+		
+		//idx에 해당하는 글번호 조회수 1 증가
+		boardMapper.incHit(boardDTO);
+		
+		ModelAndView mv = new ModelAndView();
+		
+		// view.jsp에 출력할 내용 검색
+		BoardDTO dto = boardMapper.getBoard(boardDTO);
+		
+		// menu_id로 메뉴 조회
+		String menu_id = dto.getMenu_id();
+		MenuDTO menuDTO = new MenuDTO(menu_id, null, 0);
+		menuDTO         = menuMapper.getMenu(menuDTO);
+		
+		// menuList 도 넣어줘야 include한 메뉴바가 뜬다
+		mv.addObject(     "menuList", menuList );
+		mv.addObject(     "menuDTO", menuDTO   );
+		mv.addObject(     "boardDTO", dto      );
+		mv.setViewName(   "board/view"         );
+		
+		return mv;
+	}
+	
+	// DELETE
+	@RequestMapping("/Board/Delete")
+	public ModelAndView delete(BoardDTO boardDTO) {
+		
+		// BoardDTO (idx) 로 삭제
+		boardMapper.deleteBoard( boardDTO );
+		
+		String menu_id = boardDTO.getMenu_id();
+		// 삭제 후 이동
+		ModelAndView mv = new ModelAndView();		
+		mv.setViewName("redirect:/Board/List?menu_id="+menu_id );
+		return mv;
+	
+	}
+	
+	// UPDATEFORM
+	@RequestMapping("/Board/UpdateForm")
+	public ModelAndView updateForm(BoardDTO boardDTO) {
+		
+		// 메뉴 목록 조회
+		List<MenuDTO> menuList = menuMapper.getMenuList();
+		
+		// 메뉴이름 조회
+		String menu_id = boardDTO.getMenu_id();
+		MenuDTO menuDTO = new MenuDTO(menu_id, null, 0);
+		menuDTO         = menuMapper.getMenu(menuDTO);
+		
+		// 수정할 게시글 정보를 idx로 조회
+		BoardDTO board = boardMapper.getBoard(boardDTO);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("menuList", menuList);
+		mv.addObject("menuDTO", menuDTO);
+		mv.addObject("board", board);
+		mv.setViewName("board/update");
+		return mv;
+	}
+	
+	// UPDATE
+	@RequestMapping("/Board/Update")
+	public ModelAndView update(BoardDTO boardDTO) {
+		
+		// 받은 정보 수정
+		boardMapper.updateBoard(boardDTO);
+		
+		ModelAndView mv = new ModelAndView();
+		
+		String menu_id = boardDTO.getMenu_id();
+		MenuDTO menuDTO = new MenuDTO(menu_id, null, 0);
+		menuDTO         = menuMapper.getMenu(menuDTO);
+		mv.setViewName("redirect:/Board/List?menu_id="+menu_id);
+		return mv;
+		
+	}
 }
 
 

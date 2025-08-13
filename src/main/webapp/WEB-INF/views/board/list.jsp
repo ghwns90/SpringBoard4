@@ -14,27 +14,34 @@
  -->
 
 <style>
-   td {text-align: center;}
-   
-   tr:first-child {
-   	   background-color : black;
-   	   font-weight : bold;  
-   	   /* SCSS 문법 (sass 문법중에 하나)
-   	   : 별도 라이브러리 필요*/
-   	   td {
-       	   border-color:white;
-   	   	   color : white;
-       }      
-   }
-   
-   td[colspan] {
-       text-align : right; 
-   }  	 
-   
-   #menu a { 
-      color:white; 
-      font-weight: bold;      
-   }  
+  #table {
+  	td {
+  		padding : 10px;
+  		text-align : center;
+  	}
+  	
+  	td:nth-of-type(1) {	width : 100px; }
+  	td:nth-of-type(2) {	width : 400px; text-align : left; }
+  	td:nth-of-type(3) {	width : 100px; }
+  	tr:not(tr:nth-of-type(1)) td:nth-of-type(4) {	width : 100px; font-size : 12px; }
+  	td:nth-of-type(5) {	width : 100px; }
+  	
+  	tr:first-child {
+  		background : #333;
+  		color : #ddd;
+  		font-weight : bold;
+  		td {
+  			border-color : silver;
+  		}
+  		&>td:nth-of-type(2) {
+  			text-align : center;
+  		}
+  	}
+  	
+  	tr:nth-child(2) td {
+  		text-align : right;
+  	}
+  }
    
    
 </style> 
@@ -48,10 +55,10 @@
 	
 	<%-- <h2>${ menu_id }게시물 목록</h2> --%>
 	<h2>${ menuDTO.menu_name } 게시물 목록</h2> 
-	<%-- <h2>${ param.menu_id }게시물 목록</h2 --%>>
+	<%-- <h2>${ param.menu_id }게시물 목록</h2 --%>
 	
 	<!--  게시물 목록 -->
-	<table>
+	<table id = "table">
 	  <tr>
 	    <td>번호</td>	 
 	    <td>제목</td>

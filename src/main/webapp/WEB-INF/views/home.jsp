@@ -24,6 +24,8 @@
    <hr>
    <a href="/Board/List?menu_id=MENU01">게시물 목록</a><br />
    <a href="/Board/WriteForm?menu_id=MENU01">새 게시물 추가</a><br />
+   <hr>
+   
   </main>
    
 </body>
